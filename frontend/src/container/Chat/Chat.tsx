@@ -1,6 +1,7 @@
 import Navbar from "../../components/Navbar/Navbar.tsx";
 import MessageList from "../../components/MessageList/MessageList.tsx";
 import {Container} from "@mui/material";
+import MessageForm from "../../components/MessageForm/MessageForm.tsx";
 
 const Chat = () => {
     return (
@@ -10,7 +11,8 @@ const Chat = () => {
           </header>
             <main>
                 <Container>
-                <MessageList/>
+                    <MessageList/>
+                    <MessageForm/>
             </Container>
             </main>
         </>

@@ -28,12 +28,22 @@ export const fetchMessages = createAsyncThunk<IMessage[]>(
     }
 );
 
+export const postMessages = createAsyncThunk('message/postMessages', async (message: IMessage) => {
+    const { data } = await axiosAPI.post('/messages/add', message);
+    return { ...message, id: data.id };
+});
+
+
 export const messageSlice = createSlice({
     name: 'message',
     initialState,
     reducers: {},
     extraReducers: (builder) => {
         builder
+            .addCase(fetchMessages.pending, (state) => {
+                state.isLoading = true;
+                state.error = false;
+            })
             .addCase(fetchMessages.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.messages = action.payload;
@@ -42,10 +52,19 @@ export const messageSlice = createSlice({
                 state.isLoading = false;
                 state.error = true;
             })
-            .addCase(fetchMessages.pending, (state) => {
+            .addCase(postMessages.pending, (state) => {
                 state.isLoading = true;
                 state.error = false;
+            })
+            .addCase(postMessages.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.messages.push(action.payload);
+            })
+            .addCase(postMessages.rejected, (state) => {
+                state.isLoading = false;
+                state.error = true;
             });
+
     },
 
 });
