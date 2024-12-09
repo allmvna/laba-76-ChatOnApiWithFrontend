@@ -55,8 +55,8 @@ const MessageForm = () => {
                         width: "60%",
                         border: "3px solid #001f3d",
                         borderRadius: "10px",
-                        p: 4,
-                        mt: 5,
+                        p: 3,
+                        mt: 3,
                         mb: 2
                     }}
                 >

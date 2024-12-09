@@ -15,12 +15,31 @@ const MessageList = () => {
     }, [dispatch]);
 
 
+    const formatDate = (dateString: string) => {
+        const date = dayjs(dateString);
+        const now = dayjs();
+
+        if (now.diff(date, 'day') === 1) {
+            return "Yesterday";
+        }
+
+        if (now.isSame(date, 'year')) {
+            if (now.isSame(date, 'day')) {
+                return date.format('HH:mm');
+            }
+            return date.format('DD/MM');
+        }
+
+        return date.format('DD/MM/YYYY');
+    };
+
+
     return (
         <>
             {isLoading ? (
                 <Loader />
             ) : error ? (
-                <Alert severity="error">No data. Try again!</Alert>
+                <Alert severity="error">There is no data. Send a new message or try again!</Alert>
             ) : (
             <Grid container spacing={2}>
                 {messages.map((m) => (
@@ -30,7 +49,6 @@ const MessageList = () => {
                                 minWidth: 275,
                                 border: "3px solid",
                                 borderRadius: "10px",
-                                p: 1,
                             }}
                         >
                             <CardContent>
@@ -41,12 +59,12 @@ const MessageList = () => {
                                 </Grid>
                                 <Grid size={12}>
                                     <Typography sx={{fontSize: 20, ml: 1}}>
-                                        <strong style={{ color: "blue" }}>Message:</strong> {m.message}
+                                        <strong style={{ color: "blue" }}>Message:</strong> "{m.message}"
                                     </Typography>
                                 </Grid>
                                 <Grid size={12}>
                                     <Typography sx={{fontSize: 20, ml: 1}}>
-                                        <strong style={{ color: "green" }}>Date:</strong> {dayjs(m.datetime).format('DD/MM/YYYY HH:mm')}
+                                        <strong style={{ color: "green" }}>Date:</strong> {formatDate(m.datetime)}
                                     </Typography>
                                 </Grid>
                             </CardContent>
